@@ -33,6 +33,9 @@ static void update_time() {
 }
 
 static void main_window_load(Window *window) {
+    //Set the windows background color
+    window_set_background_color(s_main_window, GColorBlack);
+    
     //Create GFont
     s_time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_PERFECT_DOS_48));
     s_weather_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_PERFECT_DOS_20));
@@ -40,7 +43,7 @@ static void main_window_load(Window *window) {
     //Create time TextLayer
     s_time_layer = text_layer_create(GRect(2, 110, 144, 50));
     text_layer_set_background_color(s_time_layer, GColorClear);
-    text_layer_set_text_color(s_time_layer, GColorBlack);
+    text_layer_set_text_color(s_time_layer, GColorWhite);
     
     //Improve the layout to be more like a watchface
     text_layer_set_font(s_time_layer, s_time_font);
@@ -52,7 +55,7 @@ static void main_window_load(Window *window) {
     //Create weather TextLayer
     s_weather_layer = text_layer_create(GRect(2, 90, 144, 50));
     text_layer_set_background_color(s_weather_layer, GColorClear);
-    text_layer_set_text_color(s_weather_layer, GColorBlack);
+    text_layer_set_text_color(s_weather_layer, GColorWhite);
     text_layer_set_font(s_weather_layer, s_weather_font);
     text_layer_set_text_alignment(s_weather_layer, GTextAlignmentCenter);
     text_layer_set_text(s_weather_layer, "Loading…");
