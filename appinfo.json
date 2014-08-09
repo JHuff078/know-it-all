@@ -4,12 +4,18 @@
         ""
     ],
     "companyName": "Huff",
-    "longName": "Simple watchface",
+    "longName": "Simple WatchFace",
     "projectType": "native",
     "resources": {
-        "media": []
+        "media": [
+            {
+                "file": "fonts/perfect-dos-vga.ttf",
+                "name": "FONT_PERFECT_DOS_48",
+                "type": "font"
+            }
+        ]
     },
-    "shortName": "swf",
+    "shortName": "simpleWF",
     "uuid": "784501ff-1f7a-4a86-916c-c634d8f1837b",
     "versionCode": 1,
     "versionLabel": "1.0",
