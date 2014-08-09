@@ -23,6 +23,20 @@ function locationSuccess(pos) {
         //Conditions
         var conditions = json.weather[0].main;
         console.log("Conditions are " + conditions);
+        
+        //Assemble dictionary using out keys
+        var dictionary = {
+            "KEY_TEMPERATURE": temperature,
+            "KEY_CONDITIONS": conditions
+        };
+        
+        //Send to Pebble
+        Pebble.sendAppMessage(dictionary, function(e) {
+           console.log("Weather info sent to Pebble successfully!"); 
+        },
+        function(e) {
+            console.log("Error sending weather info to Pebble!");
+        });
     });
 }
 
@@ -49,4 +63,5 @@ Pebble.addEventListener("ready", function(e) {
 //Listen for when an AppMessage is received
 Pebble.addEventListener("appmessage", function(e) {
     console.log("AppMessage received!");
+    getWeather();
 });
