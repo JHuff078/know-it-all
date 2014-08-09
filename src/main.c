@@ -75,6 +75,19 @@ static void main_window_unload(Window *window) {
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
     update_time();
+    
+    //Get weather update every 30 mintues
+    if (tick_time->tm_min % 30 == 0) {
+        //Begin dictionary
+        DictionaryIterator *iter;
+        app_message_outbox_begin(&iter);
+        
+        //Add a key-value pair
+        dict_write_uint8(iter, 0, 0);
+        
+        //Send the message
+        app_message_outbox_send();
+    }
 }
 
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
@@ -89,7 +102,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     //For all items
     while (t != NULL) {
         //Which key was received?
-        switch(t->key) {
+        switch (t->key) {
             case KEY_TEMPERATURE:
                 snprintf(temperature_buffer, sizeof(temperature_buffer), "%dC", (int) t->value->int32);
                 break;
