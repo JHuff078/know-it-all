@@ -1,0 +1,19 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "Huff",
+    "longName": "Simple WatchFace",
+    "projectType": "native",
+    "resources": {
+        "media": []
+    },
+    "shortName": "simpleWF",
+    "uuid": "784501ff-1f7a-4a86-916c-c634d8f1837b",
+    "versionCode": 1,
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": true
+    }
+}
