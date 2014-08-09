@@ -4,12 +4,12 @@
         ""
     ],
     "companyName": "Huff",
-    "longName": "Simple WatchFace",
+    "longName": "Simple watchface",
     "projectType": "native",
     "resources": {
         "media": []
     },
-    "shortName": "simpleWF",
+    "shortName": "swf",
     "uuid": "784501ff-1f7a-4a86-916c-c634d8f1837b",
     "versionCode": 1,
     "versionLabel": "1.0",
