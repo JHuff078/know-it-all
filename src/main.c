@@ -58,7 +58,7 @@ static void main_window_load(Window *window) {
     text_layer_set_text_color(s_weather_layer, GColorWhite);
     text_layer_set_font(s_weather_layer, s_weather_font);
     text_layer_set_text_alignment(s_weather_layer, GTextAlignmentCenter);
-    text_layer_set_text(s_weather_layer, "Loading…");
+    text_layer_set_text(s_weather_layer, "Loading...");
     
     layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_weather_layer));
 }
