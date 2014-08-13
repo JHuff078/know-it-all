@@ -6,3 +6,6 @@ Once completed, it should show:
  - Time
  - Date
  - Battery
+
+Kudos to:
+Bluetooth icon - (FlatIcons)[http://flaticons.net]
