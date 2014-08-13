@@ -12,19 +12,29 @@
     "resources": {
         "media": [
             {
-                "file": "images/Bluetooth-32.png",
+                "file": "images/Bluetooth-24.png",
                 "name": "BLUETOOTH_ICON",
                 "type": "png"
             },
             {
-                "file": "fonts/perfect-dos-vga.ttf",
-                "name": "FONT_PERFECT_DOS_48",
-                "type": "font"
+                "file": "images/Battery-Empty-24.png",
+                "name": "BATTERY_EMPTY_ICON",
+                "type": "png"
             },
             {
-                "file": "fonts/perfect-dos-vga.ttf",
-                "name": "FONT_PERFECT_DOS_20",
-                "type": "font"
+                "file": "images/Battery-Half-24.png",
+                "name": "BATTERY_HALF_ICON",
+                "type": "png"
+            },
+            {
+                "file": "images/Battery-Full-24.png",
+                "name": "BATTERY_FULL_ICON",
+                "type": "png"
+            },
+            {
+                "file": "images/Battery-Charging-24.png",
+                "name": "BATTERY_CHARGING_ICON",
+                "type": "png"
             }
         ]
     },

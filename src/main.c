@@ -5,35 +5,42 @@
 
 #define SCREEN_WIDTH 144
 #define SCREEN_HEIGHT 168
+#define PADDING_X 1
+#define PADDING_Y 1
 
+#define BATTERY_ICON_SIZE 24
+#define BATTERY_ICON_POS_X SCREEN_WIDTH - BATTERY_ICON_SIZE - PADDING_X
+#define BATTERY_ICON_POS_Y 0
+
+#define BLUETOOTH_ICON_SIZE 24
+#define BLUETOOTH_ICON_POS_X BATTERY_ICON_POS_X - BLUETOOTH_ICON_SIZE - PADDING_X
+#define BLUETOOTH_ICON_POS_Y 0
+
+#define TIME_FONT_SIZE 49
 #define TIME_LAYER_WIDTH SCREEN_WIDTH
 #define TIME_LAYER_HEIGHT 50
 #define TIME_LAYER_POS_X 0
-#define TIME_LAYER_POS_Y 110
+#define TIME_LAYER_POS_Y BATTERY_ICON_POS_Y + BATTERY_ICON_SIZE + PADDING_Y
 
+#define WEATHER_FONT_SIZE 21
 #define WEATHER_LAYER_WIDTH SCREEN_WIDTH
-#define WEATHER_LAYER_HEIGHT 50
+#define WEATHER_LAYER_HEIGHT 25
 #define WEATHER_LAYER_POS_X 0
-#define WEATHER_LAYER_POS_Y 90
+#define WEATHER_LAYER_POS_Y SCREEN_HEIGHT - WEATHER_FONT_SIZE - PADDING_Y
 
-#define BLUETOOTH_ICON_SIZE 32
-#define BLUETOOTH_ICON_POS_X SCREEN_WIDTH - BLUETOOTH_ICON_SIZE
-#define BLUETOOTH_ICON_POS_Y 0
-
-// #define BATTERY_ICON_SIZE 32
-// #define BATTERY_ICON_POS_X SCREEN_WIDTH - BATTERY_ICON_SIZE
-// #define BATTERY_ICON_POS_Y 0
 
 Window *main_window;
 
 TextLayer *time_layer;
+
 TextLayer *weather_layer;
 
-GFont *time_font;
-GFont *weather_font;
+BitmapLayer *battery_icon_layer;
+GBitmap *battery_icon[4];
 
 BitmapLayer *bluetooth_icon_layer;
 GBitmap *bluetooth_icon;
+
 
 void update_time() {
     //Get a tm structure
@@ -56,6 +63,18 @@ void update_time() {
     text_layer_set_text(time_layer, buffer);
 }
 
+void update_battery_icon(BatteryChargeState charge_state) {
+    if (charge_state.is_charging) {
+        bitmap_layer_set_bitmap(battery_icon_layer, battery_icon[3]);
+    } else if (charge_state.charge_percent > 80) {
+        bitmap_layer_set_bitmap(battery_icon_layer, battery_icon[2]);
+    } else if (charge_state.charge_percent > 20) {
+        bitmap_layer_set_bitmap(battery_icon_layer, battery_icon[1]);
+    } else {
+        bitmap_layer_set_bitmap(battery_icon_layer, battery_icon[0]);
+    }
+}
+
 void main_window_load(Window *window) {
     //Set the windows background color
     window_set_background_color(main_window, GColorBlack);
@@ -63,14 +82,11 @@ void main_window_load(Window *window) {
     /*
      * Time Layer
      */
-    //Create GFont
-    time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_PERFECT_DOS_48));
-    
     //Create time TextLayer
     time_layer = text_layer_create(GRect(TIME_LAYER_POS_X, TIME_LAYER_POS_Y, TIME_LAYER_WIDTH, TIME_LAYER_HEIGHT));
     text_layer_set_background_color(time_layer, GColorClear);
     text_layer_set_text_color(time_layer, GColorWhite);
-    text_layer_set_font(time_layer, time_font);
+    text_layer_set_font(time_layer, fonts_get_system_font(FONT_KEY_ROBOTO_BOLD_SUBSET_49));
     text_layer_set_text_alignment(time_layer, GTextAlignmentCenter);
     
     //Add it as a child layer to the Window's root layer
@@ -79,19 +95,29 @@ void main_window_load(Window *window) {
     /*
      * Weather Layer
      */
-    //Create GFont
-    weather_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_PERFECT_DOS_20));
-
     //Create weather TextLayer
     weather_layer = text_layer_create(GRect(WEATHER_LAYER_POS_X, WEATHER_LAYER_POS_Y, WEATHER_LAYER_WIDTH, WEATHER_LAYER_HEIGHT));
     text_layer_set_background_color(weather_layer, GColorClear);
     text_layer_set_text_color(weather_layer, GColorWhite);
-    text_layer_set_font(weather_layer, weather_font);
     text_layer_set_text_alignment(weather_layer, GTextAlignmentCenter);
+    text_layer_set_font(weather_layer, fonts_get_system_font(FONT_KEY_ROBOTO_CONDENSED_21));
     text_layer_set_text(weather_layer, "Loading...");
     
     //Add it as a child layer to the Window's root layer
     layer_add_child(window_get_root_layer(window), text_layer_get_layer(weather_layer));
+
+    /*
+     * Battery Icon Layer
+     */
+    //Create GBitmap, then set it to created BitmapLayer
+    battery_icon[0] = gbitmap_create_with_resource(RESOURCE_ID_BATTERY_EMPTY_ICON);
+    battery_icon[1] = gbitmap_create_with_resource(RESOURCE_ID_BATTERY_HALF_ICON);
+    battery_icon[2] = gbitmap_create_with_resource(RESOURCE_ID_BATTERY_FULL_ICON);
+    battery_icon[3] = gbitmap_create_with_resource(RESOURCE_ID_BATTERY_CHARGING_ICON);
+    battery_icon_layer = bitmap_layer_create(GRect(BATTERY_ICON_POS_X, BATTERY_ICON_POS_Y, BATTERY_ICON_SIZE, BATTERY_ICON_SIZE));
+    update_battery_icon(battery_state_service_peek());
+    bitmap_layer_set_alignment(battery_icon_layer, GAlignCenter);
+    layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(battery_icon_layer));
 
     /*
      * Bluetooth Icon Layer
@@ -111,12 +137,18 @@ void main_window_load(Window *window) {
 void main_window_unload(Window *window) {
     //Destroy time elements
     text_layer_destroy(time_layer);
-    fonts_unload_custom_font(time_font);
     
     //Destroy weather elements
     text_layer_destroy(weather_layer);
-    fonts_unload_custom_font(weather_font);
 
+    //Destroy Battery Icon elements
+    GBitmap *ptr = battery_icon[0];
+    while (!ptr) {
+        gbitmap_destroy(ptr);
+        ++ptr;
+    }
+    bitmap_layer_destroy(battery_icon_layer);
+    
     //Destroy Bluetooth Icon elements
     gbitmap_destroy(bluetooth_icon);
     bitmap_layer_destroy(bluetooth_icon_layer);
@@ -146,6 +178,11 @@ void bluetooth_handler(bool connected) {
     } else {
         layer_set_hidden(bitmap_layer_get_layer(bluetooth_icon_layer), true);
     }
+}
+
+void battery_handler(BatteryChargeState charge_state) {
+    //Check the status of the battery and display the corresponding bitmap
+    update_battery_icon(charge_state);
 }
 
 void inbox_received_callback(DictionaryIterator *iterator, void *context) {
@@ -212,6 +249,9 @@ void init() {
     //Register with BluetoothConnectionService
     bluetooth_connection_service_subscribe(bluetooth_handler);
     
+    //Register with BatteryStateService
+    battery_state_service_subscribe(battery_handler);
+
     //Make sure the time is displayed from the start
     update_time();
     
