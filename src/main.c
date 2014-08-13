@@ -1,34 +1,9 @@
 #include <pebble.h>
-    
-#define KEY_TEMPERATURE 0
-#define KEY_CONDITIONS 1
+#include "main.h"
 
-#define SCREEN_WIDTH 144
-#define SCREEN_HEIGHT 168
-#define PADDING_X 1
-#define PADDING_Y 1
-
-#define BATTERY_ICON_SIZE 24
-#define BATTERY_ICON_POS_X SCREEN_WIDTH - BATTERY_ICON_SIZE - PADDING_X
-#define BATTERY_ICON_POS_Y 0
-
-#define BLUETOOTH_ICON_SIZE 24
-#define BLUETOOTH_ICON_POS_X BATTERY_ICON_POS_X - BLUETOOTH_ICON_SIZE - PADDING_X
-#define BLUETOOTH_ICON_POS_Y 0
-
-#define TIME_FONT_SIZE 49
-#define TIME_LAYER_WIDTH SCREEN_WIDTH
-#define TIME_LAYER_HEIGHT 50
-#define TIME_LAYER_POS_X 0
-#define TIME_LAYER_POS_Y BATTERY_ICON_POS_Y + BATTERY_ICON_SIZE + PADDING_Y
-
-#define WEATHER_FONT_SIZE 21
-#define WEATHER_LAYER_WIDTH SCREEN_WIDTH
-#define WEATHER_LAYER_HEIGHT 25
-#define WEATHER_LAYER_POS_X 0
-#define WEATHER_LAYER_POS_Y SCREEN_HEIGHT - WEATHER_FONT_SIZE - PADDING_Y
-
-
+/*
+ * UI Components
+ */
 Window *main_window;
 
 TextLayer *time_layer;
@@ -41,7 +16,18 @@ GBitmap *battery_icon[4];
 BitmapLayer *bluetooth_icon_layer;
 GBitmap *bluetooth_icon;
 
+/*
+ * main.c main function
+ */
+int main(void) {
+    init();
+    app_event_loop();
+    deinit();
+}
 
+/*
+ * Functions declared in main.h
+ */
 void update_time() {
     //Get a tm structure
     time_t temp = time(NULL);
@@ -268,10 +254,4 @@ void init() {
 void deinit() {
     //Destroy the window
     window_destroy(main_window);
-}
-
-int main(void) {
-    init();
-    app_event_loop();
-    deinit();
 }
