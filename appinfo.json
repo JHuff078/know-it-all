@@ -12,13 +12,18 @@
     "resources": {
         "media": [
             {
-                "file": "fonts/perfect-dos-vga.ttf",
-                "name": "FONT_PERFECT_DOS_20",
-                "type": "font"
+                "file": "images/Bluetooth-128.png",
+                "name": "BLUETOOTH_ICON",
+                "type": "png"
             },
             {
                 "file": "fonts/perfect-dos-vga.ttf",
                 "name": "FONT_PERFECT_DOS_48",
+                "type": "font"
+            },
+            {
+                "file": "fonts/perfect-dos-vga.ttf",
+                "name": "FONT_PERFECT_DOS_20",
                 "type": "font"
             }
         ]
