@@ -61,6 +61,14 @@ void update_battery_icon(BatteryChargeState charge_state) {
     }
 }
 
+void update_bluetooth_visibility(bool connected) {
+    if (connected) {
+        layer_set_hidden(bitmap_layer_get_layer(bluetooth_icon_layer), false);
+    } else {
+        layer_set_hidden(bitmap_layer_get_layer(bluetooth_icon_layer), true);
+    }
+}
+
 void main_window_load(Window *window) {
     //Set the windows background color
     window_set_background_color(main_window, GColorBlack);
@@ -114,10 +122,7 @@ void main_window_load(Window *window) {
     bitmap_layer_set_bitmap(bluetooth_icon_layer, bluetooth_icon);
     bitmap_layer_set_alignment(bluetooth_icon_layer, GAlignCenter);
     layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(bluetooth_icon_layer));
-   
-    if (!bluetooth_connection_service_peek()) {
-        layer_set_hidden(bitmap_layer_get_layer(bluetooth_icon_layer), true);
-    }
+    update_bluetooth_visibility(bluetooth_connection_service_peek());
 }
 
 void main_window_unload(Window *window) {
@@ -159,11 +164,7 @@ void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
 
 void bluetooth_handler(bool connected) {
     //Display the Bluetooth icon
-    if (connected) {
-        layer_set_hidden(bitmap_layer_get_layer(bluetooth_icon_layer), false);
-    } else {
-        layer_set_hidden(bitmap_layer_get_layer(bluetooth_icon_layer), true);
-    }
+    update_bluetooth_visibility(connected);
 }
 
 void battery_handler(BatteryChargeState charge_state) {

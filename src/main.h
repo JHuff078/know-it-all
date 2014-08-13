@@ -40,25 +40,27 @@
  */
 void update_time();
 
-void update_battery_icon(BatteryChargeState charge_state);
+void update_battery_icon(BatteryChargeState);
 
-void main_window_load(Window *window);
+void update_bluetooth_visibility(bool);
 
-void main_window_unload(Window *window);
+void main_window_load(Window *);
 
-void tick_handler(struct tm *tick_time, TimeUnits units_changed);
+void main_window_unload(Window *);
 
-void bluetooth_handler(bool connected);
+void tick_handler(struct tm *, TimeUnits);
 
-void battery_handler(BatteryChargeState charge_state);
+void bluetooth_handler(bool);
 
-void inbox_received_callback(DictionaryIterator *iterator, void *context);
+void battery_handler(BatteryChargeState);
 
-void inbox_dropped_callback(AppMessageResult reason, void *context);
+void inbox_received_callback(DictionaryIterator *, void *);
 
-void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reason, void *context);
+void inbox_dropped_callback(AppMessageResult, void *);
 
-void outbox_sent_callback(DictionaryIterator *iterator, void *context);
+void outbox_failed_callback(DictionaryIterator *, AppMessageResult, void *);
+
+void outbox_sent_callback(DictionaryIterator *, void *);
 
 void init();
 
