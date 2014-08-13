@@ -8,4 +8,4 @@ Once completed, it should show:
  - Battery
 
 Kudos to:
-Bluetooth icon - (FlatIcons)[http://flaticons.net]
+Bluetooth icon - [FlatIcons](http://flaticons.net)
