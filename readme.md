@@ -13,3 +13,6 @@
  - Bluetooth icon - [FlatIcons](http://flaticons.net)
  - Battery icons - [Pyconic](http://pyconic.com/) and [FlatIcons](http://flaticons.net)
  - Weather api - [OpenWeatherMap](http://openweathermap.org)
+
+#### Screen shots
+###### Coming soon!
