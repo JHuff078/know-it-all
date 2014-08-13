@@ -12,7 +12,7 @@
     "resources": {
         "media": [
             {
-                "file": "images/Bluetooth-128.png",
+                "file": "images/Bluetooth-32.png",
                 "name": "BLUETOOTH_ICON",
                 "type": "png"
             },
