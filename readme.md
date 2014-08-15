@@ -15,4 +15,4 @@
  - Weather api - [OpenWeatherMap](http://openweathermap.org)
 
 #### Screen shots
-![](https://github.com/JHuff078/know-it-all/blob/master/pebble-screenshot_2014-08-13_16-53-57.png)
+![](https://github.com/JHuff078/know-it-all/blob/master/pebble-screenshot_2014-08-15_11-27-26.png)
