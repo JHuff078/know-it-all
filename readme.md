@@ -4,7 +4,7 @@
 
 #### Watchface components:
  - [x] Time
- - [ ] Date
+ - [x] Date
  - [x] Battery Level
  - [x] Bluetooth Status
  - [x] Weather
