@@ -8,6 +8,8 @@ Window *main_window;
 
 TextLayer *time_layer;
 
+TextLayer *date_layer;
+
 TextLayer *weather_layer;
 
 BitmapLayer *battery_icon_layer;
@@ -34,19 +36,24 @@ void update_time() {
     struct tm *time_tick = localtime(&temp);
     
     //Create a long-lived buffer
-    static char buffer[] = "00:00";
+    static char time_text[] = "00:00";
+    static char date_text[] = "Xxx 00";
     
     //Write the current hours and minutes into the buffer
     if(clock_is_24h_style() == true) {
         //Use 24h format
-        strftime(buffer, sizeof("00:00"), "%H:%M", time_tick);
+        strftime(time_text, sizeof(time_text), "%H:%M", time_tick);
     } else {
         //User 12H format
-        strftime(buffer, sizeof("00:00"), "%I:%M", time_tick);
+        strftime(time_text, sizeof(time_text), "%I:%M", time_tick);
     }
     
-    //Display this time on the TextLayer
-    text_layer_set_text(time_layer, buffer);
+    strftime(date_text, sizeof(date_text), "%b %e", time_tick);
+
+    //Display this time and date on their TextLayer
+    text_layer_set_text(time_layer, time_text);
+    text_layer_set_text(date_layer, date_text);
+
 }
 
 void update_battery_icon(BatteryChargeState charge_state) {
@@ -85,7 +92,20 @@ void main_window_load(Window *window) {
     
     //Add it as a child layer to the Window's root layer
     layer_add_child(window_get_root_layer(window), text_layer_get_layer(time_layer));
-    
+
+    /*
+     * Date Layer
+     */
+    //Create date TextLayer
+    date_layer = text_layer_create(GRect(DATE_LAYER_POS_X, DATE_LAYER_POS_Y, DATE_LAYER_WIDTH, DATE_LAYER_HEIGHT));
+    text_layer_set_background_color(date_layer, GColorClear);
+    text_layer_set_text_color(date_layer, GColorWhite);
+    text_layer_set_text_alignment(date_layer, GTextAlignmentLeft);
+    text_layer_set_font(date_layer, fonts_get_system_font(FONT_KEY_ROBOTO_CONDENSED_21));
+
+    //Add it as a child layer to the Window's root layer
+    layer_add_child(window_get_root_layer(window), text_layer_get_layer(date_layer));
+
     /*
      * Weather Layer
      */
@@ -128,6 +148,9 @@ void main_window_load(Window *window) {
 void main_window_unload(Window *window) {
     //Destroy time elements
     text_layer_destroy(time_layer);
+
+    //Destroy date elements
+    text_layer_destroy(date_layer);
     
     //Destroy weather elements
     text_layer_destroy(weather_layer);
